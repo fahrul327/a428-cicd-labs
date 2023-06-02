@@ -20,8 +20,10 @@ pipeline {
             steps {
                 sh './jenkins/scripts/deliver.sh' 
 		timeout(time: 1, unit: 'MINUTES') {
-			'Menunggu 1 menit untuk menyelesaikan pipeline' 
-                }
+			script {
+				echo 'Menunggu 1 menit untuk menyelesaikan pipeline'
+			}
+		}
 		sh './jenkins/scripts/kill.sh' 
             }
         }
