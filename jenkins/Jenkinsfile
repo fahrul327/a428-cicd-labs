@@ -19,7 +19,7 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
-        stage('deploy') {
+        stage('Deploy') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
 		timeout(time: 1, unit: 'MINUTES') {
