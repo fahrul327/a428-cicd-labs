@@ -16,15 +16,21 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
-        stage('Deploy') { 
+        stage('Aproval') {
             steps {
-                sh './jenkins/scripts/deliver.sh' 
-		script {
-			echo 'Menunggu 1 menit untuk menyelesaikan pipeline'
-			sleep time: 60, unit: 'SECONDS'
-		}
-		sh './jenkins/scripts/kill.sh' 
+		input message: 'Lanjutkan ke tahap Deploy? (Click "Proceed" to continue, or "Abort" to stop the pipeline)'
+                }
+        }
+        stage('Deploy') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+                script {
+                        echo 'Menunggu 1 menit untuk menyelesaikan pipeline'
+                        sleep time: 60, unit: 'SECONDS'
+                }
+                sh './jenkins/scripts/kill.sh'
             }
         }
+
     }
 }
