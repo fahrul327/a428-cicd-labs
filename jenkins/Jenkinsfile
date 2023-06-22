@@ -11,20 +11,28 @@ pipeline {
                 checkout([$class: 'GitSCM',
                           branches: [[name: '*/react-app']],
                           userRemoteConfigs: [[url: 'git@github.com:fahrul327/a428-cicd-labs.git']]])
-            script {
-                sh 'git pull'
+            }
+            post {
+                success {
+                    script {
+                        sh 'git pull'
+                    }
+                }
             }
 <<<<<<< HEAD
 	 }
 =======
         }
+<<<<<<< HEAD
 >>>>>>> 4397fcad9ad01f14277fd663b3cdb7cd7f104a0b
        }
+=======
+>>>>>>> 367e394ffe3085549bf7e3930de74a4185013500
         stage('Build') {
             steps {
-                scripts {   
+                script {
                     docker.image('node:16-buster-slim').inside('-p 3000:3000') {
-                    sh 'npm install'
+                        sh 'npm install'
                     }
                 }
             }
@@ -42,5 +50,4 @@ pipeline {
             }
         }
     }
-}
 }
