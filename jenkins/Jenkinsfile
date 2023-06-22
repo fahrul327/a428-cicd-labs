@@ -2,10 +2,22 @@ pipeline {
     agent {
         docker {
             image 'node:16-buster-slim'
-            args '-p 3000:3000'
+            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket inside the container
         }
     }
+
+    environment {
+        CI = 'true'
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/react-app']],
+                          userRemoteConfigs: [[url: 'git@github.com:fahrul327/a428-cicd-labs.git']]])
+            }
+        }
         stage('Build') {
             steps {
                 sh 'npm install'
@@ -16,21 +28,12 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
-        stage('Aproval') {
-            steps {
-		input message: 'Lanjutkan ke tahap Deploy? (Click "Proceed" to continue, or "Abort" to stop the pipeline)'
-                }
-        }
-        stage('Deploy') {
+        stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
-                script {
-                        echo 'Menunggu 1 menit untuk menyelesaikan pipeline'
-                        sleep time: 60, unit: 'SECONDS'
-                }
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
             }
         }
-
     }
 }
