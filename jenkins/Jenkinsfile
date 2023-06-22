@@ -1,32 +1,17 @@
 pipeline {
-    agent any
-    
+    agent {
+        docker {
+            image 'node:lts-buster-slim'
+            args '-p 3000:3000'
+        }
+    }
     environment {
         CI = 'true'
     }
-
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([$class: 'GitSCM',
-                          branches: [[name: '*/react-app']],
-                          userRemoteConfigs: [[url: 'git@github.com:fahrul327/a428-cicd-labs.git']]])
-            }
-            post {
-                success {
-                    script {
-                        sh 'git pull origin react-app'
-                    }
-                }
-            }
-        }
         stage('Build') {
             steps {
-                script {
-                    docker.image('node:16-buster-slim').inside('-p 3000:3000') {
-                        sh 'npm install'
-                    }
-                }
+                sh 'npm install'
             }
         }
         stage('Test') {
