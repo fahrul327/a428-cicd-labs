@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build -t <dockerhub-username>/<image-name>:<tag> .'
+                sh 'docker build -t campview:1.0 .'
             }
         }
         stage('Test') {
