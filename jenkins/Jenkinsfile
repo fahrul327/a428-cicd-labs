@@ -15,7 +15,7 @@ pipeline {
             post {
                 success {
                     script {
-                        sh 'git pull'
+                        sh 'git pull origin react-app'
                     }
                 }
             }
