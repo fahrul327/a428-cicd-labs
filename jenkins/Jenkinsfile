@@ -1,11 +1,6 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16-buster-slim'
-            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket inside the container
-        }
-    }
-
+    agent any
+    
     environment {
         CI = 'true'
     }
@@ -20,7 +15,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'npm install'
+                sh 'docker build -t <dockerhub-username>/<image-name>:<tag> .'
             }
         }
         stage('Test') {
