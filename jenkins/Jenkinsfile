@@ -14,7 +14,11 @@ pipeline {
             script {
                 sh 'git pull'
             }
+<<<<<<< HEAD
 	 }
+=======
+        }
+>>>>>>> 4397fcad9ad01f14277fd663b3cdb7cd7f104a0b
        }
         stage('Build') {
             steps {
