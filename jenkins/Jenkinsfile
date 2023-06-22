@@ -15,7 +15,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build -t campview:1.0 .'
+                sh 'npm install'
+            }
+        }
+        stage('Run Docker') {
+            steps {
+                sh 'docker run -p 3000:3000 -v $PWD:/app -w /app node:16-buster-slim npm start'
             }
         }
         stage('Test') {
