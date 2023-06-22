@@ -12,10 +12,14 @@ pipeline {
                           branches: [[name: '*/react-app']],
                           userRemoteConfigs: [[url: 'git@github.com:fahrul327/a428-cicd-labs.git']]])
             }
-        }
-        stage('Run Docker') {
+       }
+        stage('Build') {
             steps {
-                sh 'docker run -p 3000:3000 -v $PWD:/app -w /app node:16-buster-slim npm start'
+                scripts {   
+                    docker.image('node:16-buster-slim').inside('-p 3000:3000') {
+                    sh 'npm install'
+                    }
+                }
             }
         }
         stage('Test') {
@@ -31,4 +35,5 @@ pipeline {
             }
         }
     }
+}
 }
